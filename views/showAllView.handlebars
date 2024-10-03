@@ -1,0 +1,71 @@
+<html lang='en'>
+
+  <head>
+    <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <link rel='stylesheet' href='https://unpkg.com/98.css' />
+    <link
+      rel='icon'
+      href='https://win98icons.alexmeub.com/icons/png/world-0.png/'
+    />
+    <title>XaropeCorp</title>
+  </head>
+  <style>
+    body { background-color: #008080; display: flex; align-items: center;
+    justify-content: center; flex-direction: column; height: 80vh; gap: 2.5rem;}
+  </style>
+
+  <body>
+
+    <div class='window'>
+      <div class='title-bar'>
+        <div class='title-bar-text'>XaropeCorp©</div>
+        <div class='title-bar-controls'>
+          <button aria-label='Minimize'></button>
+          <button aria-label='Maximize'></button>
+          <button aria-label='Close'></button>
+        </div>
+      </div>
+      <div class='window-body'>
+        <menu role='tablist'>
+          <li role='tab' aria-selected='true'><a
+              href='http://localhost:3000/showAll'
+            >Lista</a></li>
+          <li role='tab'><a href='http://localhost:3000/'>Cadastro</a></li>
+        </menu>
+        <div class='window' role='tabpanel'>
+          <div class='window-body'>
+            <table class='table'>
+              <thead>
+                <th scope='col'>#</th>
+                <th scope='col'>Nome</th>
+                <th scope='col'>Salário</th>
+                <th scope='col'>Departamento</th>
+                <th scope='col'>INSS</th>
+                <th scope='col'> </th>
+                <th scope='col'> </th>
+              </thead>
+
+              <tbody>
+                {{#each results_form}}
+                  <tr>
+                    <td>{{id}}</td>
+                    <td>{{nome}}</td>
+                    <td>{{salario}}</td>
+                    <td>{{departamento}}</td>
+                    <td>{{inss}}</td>
+                    <td><a href='/edit/{{id}}'>Editar</a> </td>
+                    <td><a href='/delete/{{id}}'>Demitir</a></td>
+
+                  </tr>
+                {{/each}}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </body>
+
+</html>
