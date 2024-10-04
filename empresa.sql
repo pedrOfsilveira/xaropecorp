@@ -39,9 +39,11 @@ CREATE TABLE `empregados` (
 --
 
 INSERT INTO `empregados` (`id`, `nome`, `salario`, `departamento`) VALUES
-(1, 'Marcos', 4000, 'administrativo'),
-(2, 'Odracir', 1500, 'designer'),
-(3, 'Antônia', 3500, 'contabil');
+(1, 'Pedro Silveira', 45000, 'designer'),
+(2, 'Artur Costa', 1500, 'administrativo'),
+(3, 'João Roberto', 3500, 'contabil');
+(4, 'Eduardo Brião', 300550, 'fabrica');
+(5, 'Isabella Rosa', 5.30, 'designer');
 
 --
 -- Índices para tabelas despejadas
