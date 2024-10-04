@@ -1,11 +1,37 @@
 const { sequelize, Sequelize } = require('../config/database');
 const empregadosModel = require('../models/empregados')(sequelize, Sequelize);
+const { Op } = require("sequelize");
 
 exports.showAll = (req, res) => {
   empregadosModel
     .findAll({})
     .then(results => {
-      console.log(results);
+      results.forEach(empregado => {
+        empregado.salario = empregado.salario.toFixed(2);
+        let salarioBruto = empregado.salario;
+        let inss = salarioBruto * 0.11;
+        let irpf
+
+        if (salarioBruto <= 1903.98) {
+          irpf = 0;
+        }
+        if (salarioBruto > 1903.98 && salarioBruto <= 2826.65) {
+          irpf = salarioBruto * 0.075;
+        }
+        if (salarioBruto > 2826.65 && salarioBruto <= 3751.06) {
+          irpf = salarioBruto * 0.15;
+        }
+        if (salarioBruto > 3751.06 && salarioBruto <= 4664.68) {
+          irpf = salarioBruto * 0.075;
+        }
+        if (salarioBruto > 4664.68) {
+          irpf = salarioBruto * 0.275;
+        }
+        
+        empregado.salarioLiquido = (salarioBruto - inss - irpf).toFixed(2);
+        console.log(empregado.salarioLiquido)
+      }) 
+      //console.log(results);
       res.render('showAllView', { layout: false, results_form: results });
     })
     .catch(err => {
@@ -94,3 +120,18 @@ exports.update = (req, res) => {
       });
     });
 }; // update
+
+exports.pesquisa = (req, res) => {
+  
+  let param = req.body.pesquisa;
+  empregadosModel
+  .findAll({
+    where: {
+      nome: {
+        [Op.like]: `%${param}%`,
+      },
+    },
+  }).then(anything => {
+    res.render('showAllView', { layout: false, results_form: anything });
+  })
+};
