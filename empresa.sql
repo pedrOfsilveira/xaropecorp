@@ -41,8 +41,8 @@ CREATE TABLE `empregados` (
 INSERT INTO `empregados` (`id`, `nome`, `salario`, `departamento`) VALUES
 (1, 'Pedro Silveira', 45000, 'designer'),
 (2, 'Artur Costa', 1500, 'administrativo'),
-(3, 'João Roberto', 3500, 'contabil');
-(4, 'Eduardo Brião', 300550, 'fabrica');
+(3, 'João Roberto', 3500, 'contabil'),
+(4, 'Eduardo Brião', 300550, 'fabrica'),
 (5, 'Isabella Rosa', 5.30, 'designer');
 
 --
