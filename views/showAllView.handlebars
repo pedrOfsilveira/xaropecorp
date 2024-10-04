@@ -18,6 +18,11 @@
   </style>
 
   <body>
+    <form action="/search" method="post">
+      <input type="text" name="pesquisa" placeholder="Pesquisar">
+      <input type="submit" value="Procurar">
+    </form>
+
     <img src='/images/ie.gif' alt='internet explorer' />
     <div class='window'>
       <div class='title-bar'>
@@ -41,9 +46,9 @@
               <thead>
                 <th scope='col'>#</th>
                 <th scope='col'>Nome</th>
-                <th scope='col'>Salário</th>
+                <th scope='col'>Salário Bruto</th>
+                <th scope='col'>Salário Líquido</th>
                 <th scope='col'>Departamento</th>
-                <th scope='col'>INSS</th>
                 <th scope='col'> </th>
                 <th scope='col'> </th>
               </thead>
@@ -54,8 +59,8 @@
                     <td>{{id}}</td>
                     <td>{{nome}}</td>
                     <td>{{salario}}</td>
+                    <td>{{salarioLiquido}}</td>
                     <td>{{departamento}}</td>
-                    <td>{{inss}}</td>
                     <td><a href='/edit/{{id}}'>Editar</a> </td>
                     <td><a href='/delete/{{id}}'>Demitir</a></td>
 
