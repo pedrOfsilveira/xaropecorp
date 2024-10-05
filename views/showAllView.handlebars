@@ -14,17 +14,17 @@
   <style>
     body { background-color: #008080; display: flex; align-items: center;
     justify-content: center; flex-direction: column; height: 80vh; gap: 2.5rem;}
-    img { position: absolute; bottom: 10; right: 10; }
+    img { position: absolute; bottom: 10; right: 10; } .main { scale: 1.4} th
+    button { all: unset; padding: 0; margin: 0; width: 100%; height: 100%;
+    cursor: pointer; } table form { margin: 0; } button:focus { outline: unset;
+    } .sunken-panel { max-height: 130px;} button:not(:disabled):active {
+    box-shadow: unset; } th:has(button:not(:disabled):active) { color: #008080;}
   </style>
 
   <body>
-    <form action="/search" method="post">
-      <input type="text" name="pesquisa" placeholder="Pesquisar">
-      <input type="submit" value="Procurar">
-    </form>
 
     <img src='/images/ie.gif' alt='internet explorer' />
-    <div class='window'>
+    <div class='window main'>
       <div class='title-bar'>
         <div class='title-bar-text'>XaropeCorp©</div>
         <div class='title-bar-controls'>
@@ -42,37 +42,73 @@
         </menu>
         <div class='window' role='tabpanel'>
           <div class='window-body'>
-            <table class='table'>
-              <thead>
-                <th scope='col'>#</th>
-                <th scope='col'>Nome</th>
-                <th scope='col'>Salário Bruto</th>
-                <th scope='col'>Salário Líquido</th>
-                <th scope='col'>Departamento</th>
-                <th scope='col'> </th>
-                <th scope='col'> </th>
-              </thead>
-
-              <tbody>
-                {{#each results_form}}
-                  <tr>
-                    <td>{{id}}</td>
-                    <td>{{nome}}</td>
-                    <td>{{salario}}</td>
-                    <td>{{salarioLiquido}}</td>
-                    <td>{{departamento}}</td>
-                    <td><a href='/edit/{{id}}'>Editar</a> </td>
-                    <td><a href='/delete/{{id}}'>Demitir</a></td>
-
-                  </tr>
-                {{/each}}
-              </tbody>
-            </table>
+            <form action='/search' method='post'>
+              <input
+                type='text'
+                name='pesquisa'
+                placeholder='Nome, departamento...'
+              />
+              <input type='submit' value='Procurar' />
+            </form>
+            <div class='sunken-panel'>
+              <table class='table'>
+                <thead>
+                  <th scope='col'>
+                    <form action='/orderById' method='post'>
+                      <input type='hidden' name='id' value='{{ascDesc}}' />
+                      <button type='submit'>#</button>
+                    </form>
+                  </th>
+                  <th scope='col'>
+                    <form action='/orderByNome' method='post'>
+                      <input type='hidden' name='nome' value='{{ascDesc}}' />
+                      <button type='submit'>Nome</button>
+                    </form>
+                  </th>
+                  <th scope='col'>
+                    <form action='/orderByBruto' method='post'>
+                      <input type='hidden' name='salario' value='{{ascDesc}}' />
+                      <button type='submit'>Salário Bruto</button>
+                    </form>
+                  </th>
+                  <th scope='col'>
+                    <form action='/orderByLiquido' method='post'>
+                      <input type='hidden' name='liquido' value='{{ascDesc}}' />
+                      <button type='submit'>Salário Líquido</button>
+                    </form>
+                  </th>
+                  <th scope='col'>
+                    <form action='/orderByDepartamento' method='post'>
+                      <input
+                        type='hidden'
+                        name='departamento'
+                        value='{{ascDesc}}'
+                      />
+                      <button type='submit'>Departamento</button>
+                    </form>
+                  </th>
+                  <th scope='col'> </th>
+                  <th scope='col'> </th>
+                </thead>
+                <tbody>
+                  {{#each results_form}}
+                    <tr>
+                      <td>{{id}}</td>
+                      <td>{{nome}}</td>
+                      <td>R${{salario}}</td>
+                      <td>R${{salarioLiquido}}</td>
+                      <td>{{departamento}}</td>
+                      <td><a href='/edit/{{id}}'>Editar</a> </td>
+                      <td><a href='/delete/{{id}}'>Demitir</a></td>
+                    </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
     </div>
-
   </body>
 
 </html>

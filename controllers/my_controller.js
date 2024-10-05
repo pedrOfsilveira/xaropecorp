@@ -1,6 +1,6 @@
 const { sequelize, Sequelize } = require('../config/database');
 const empregadosModel = require('../models/empregados')(sequelize, Sequelize);
-const { Op } = require("sequelize");
+const { Op } = require('sequelize');
 
 exports.showAll = (req, res) => {
   empregadosModel
@@ -10,7 +10,7 @@ exports.showAll = (req, res) => {
         empregado.salario = empregado.salario.toFixed(2);
         let salarioBruto = empregado.salario;
         let inss = salarioBruto * 0.11;
-        let irpf
+        let irpf;
 
         if (salarioBruto <= 1903.98) {
           irpf = 0;
@@ -27,10 +27,10 @@ exports.showAll = (req, res) => {
         if (salarioBruto > 4664.68) {
           irpf = salarioBruto * 0.275;
         }
-        
+
         empregado.salarioLiquido = (salarioBruto - inss - irpf).toFixed(2);
-        console.log(empregado.salarioLiquido)
-      }) 
+        console.log(empregado.salarioLiquido);
+      });
       //console.log(results);
       res.render('showAllView', { layout: false, results_form: results });
     })
@@ -122,16 +122,78 @@ exports.update = (req, res) => {
 }; // update
 
 exports.pesquisa = (req, res) => {
-  
   let param = req.body.pesquisa;
   empregadosModel
-  .findAll({
-    where: {
-      nome: {
-        [Op.like]: `%${param}%`,
+    .findAll({
+      where: {
+        nome: {
+          [Op.like]: `%${param}%`,
+        },
       },
-    },
-  }).then(anything => {
-    res.render('showAllView', { layout: false, results_form: anything });
-  })
+    })
+    .then(anything => {
+      anything.forEach(empregado => {
+        empregado.salario = empregado.salario.toFixed(2);
+        let salarioBruto = empregado.salario;
+        let inss = salarioBruto * 0.11;
+        let irpf;
+
+        if (salarioBruto <= 1903.98) {
+          irpf = 0;
+        }
+        if (salarioBruto > 1903.98 && salarioBruto <= 2826.65) {
+          irpf = salarioBruto * 0.075;
+        }
+        if (salarioBruto > 2826.65 && salarioBruto <= 3751.06) {
+          irpf = salarioBruto * 0.15;
+        }
+        if (salarioBruto > 3751.06 && salarioBruto <= 4664.68) {
+          irpf = salarioBruto * 0.075;
+        }
+        if (salarioBruto > 4664.68) {
+          irpf = salarioBruto * 0.275;
+        }
+
+        empregado.salarioLiquido = (salarioBruto - inss - irpf).toFixed(2);
+        console.log(empregado.salarioLiquido);
+      });
+      res.render('showAllView', { layout: false, results_form: anything });
+    });
+};
+
+exports.nome = (req, res) => {
+  this.ordena(req, res, 'nome');
+};
+exports.bruto = (req, res) => {
+  this.ordena(req, res, 'salario');
+};
+exports.id = (req, res) => {
+  this.ordena(req, res, 'id');
+};
+exports.departamento = (req, res) => {
+  this.ordena(req, res, 'departamento');
+};
+
+exports.ordena = (req, res, atributo) => {
+  const ordem = req.body[atributo] === 'asc' ? 'ASC' : 'DESC';
+
+  empregadosModel
+    .findAll({
+      order: [[atributo, ordem]],
+    })
+    .then(anything => {
+      if (!req.body[atributo]) {
+        res.render('showAllView', {
+          layout: false,
+          results_form: anything,
+          ascDesc: 'asc',
+        });
+      } else {
+        res.render('showAllView', {
+          layout: false,
+          results_form: anything,
+          ascDesc: req.body[atributo] === 'asc' ? 'desc' : 'asc',
+        });
+      }
+    });
 };
