@@ -16,6 +16,9 @@ module.exports = (sequelize, DataTypes)=>
             salario:{
                 type: DataTypes.DOUBLE
             },
+            liquido:{
+                type: DataTypes.DOUBLE
+            },
             departamento:{
                 type: DataTypes.STRING
             }

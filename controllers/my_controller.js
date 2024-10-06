@@ -6,32 +6,6 @@ exports.showAll = (req, res) => {
   empregadosModel
     .findAll({})
     .then(results => {
-      results.forEach(empregado => {
-        empregado.salario = empregado.salario.toFixed(2);
-        let salarioBruto = empregado.salario;
-        let inss = salarioBruto * 0.11;
-        let irpf;
-
-        if (salarioBruto <= 1903.98) {
-          irpf = 0;
-        }
-        if (salarioBruto > 1903.98 && salarioBruto <= 2826.65) {
-          irpf = salarioBruto * 0.075;
-        }
-        if (salarioBruto > 2826.65 && salarioBruto <= 3751.06) {
-          irpf = salarioBruto * 0.15;
-        }
-        if (salarioBruto > 3751.06 && salarioBruto <= 4664.68) {
-          irpf = salarioBruto * 0.075;
-        }
-        if (salarioBruto > 4664.68) {
-          irpf = salarioBruto * 0.275;
-        }
-
-        empregado.salarioLiquido = (salarioBruto - inss - irpf).toFixed(2);
-        console.log(empregado.salarioLiquido);
-      });
-      //console.log(results);
       res.render('showAllView', { layout: false, results_form: results });
     })
     .catch(err => {
@@ -40,9 +14,32 @@ exports.showAll = (req, res) => {
 };
 
 exports.insertData = (req, res) => {
+  let salarioBruto = parseFloat(req.body.salario).toFixed(2);
+  let inss = salarioBruto * 0.11;
+  let irpf;
+
+  if (salarioBruto <= 1903.98) {
+    irpf = 0;
+  }
+  if (salarioBruto > 1903.98 && salarioBruto <= 2826.65) {
+    irpf = salarioBruto * 0.075;
+  }
+  if (salarioBruto > 2826.65 && salarioBruto <= 3751.06) {
+    irpf = salarioBruto * 0.15;
+  }
+  if (salarioBruto > 3751.06 && salarioBruto <= 4664.68) {
+    irpf = salarioBruto * 0.075;
+  }
+  if (salarioBruto > 4664.68) {
+    irpf = salarioBruto * 0.275;
+  }
+
+  let salarioLiquido = (salarioBruto - inss - irpf).toFixed(2);
+
   const empregadosData = {
     nome: req.body.nome,
-    salario: req.body.salario - 10,
+    salario: salarioBruto,
+    liquido: salarioLiquido,
     departamento: req.body.departamento,
   };
 
@@ -132,31 +129,6 @@ exports.pesquisa = (req, res) => {
       },
     })
     .then(anything => {
-      anything.forEach(empregado => {
-        empregado.salario = empregado.salario.toFixed(2);
-        let salarioBruto = empregado.salario;
-        let inss = salarioBruto * 0.11;
-        let irpf;
-
-        if (salarioBruto <= 1903.98) {
-          irpf = 0;
-        }
-        if (salarioBruto > 1903.98 && salarioBruto <= 2826.65) {
-          irpf = salarioBruto * 0.075;
-        }
-        if (salarioBruto > 2826.65 && salarioBruto <= 3751.06) {
-          irpf = salarioBruto * 0.15;
-        }
-        if (salarioBruto > 3751.06 && salarioBruto <= 4664.68) {
-          irpf = salarioBruto * 0.075;
-        }
-        if (salarioBruto > 4664.68) {
-          irpf = salarioBruto * 0.275;
-        }
-
-        empregado.salarioLiquido = (salarioBruto - inss - irpf).toFixed(2);
-        console.log(empregado.salarioLiquido);
-      });
       res.render('showAllView', { layout: false, results_form: anything });
     });
 };
@@ -166,6 +138,9 @@ exports.nome = (req, res) => {
 };
 exports.bruto = (req, res) => {
   this.ordena(req, res, 'salario');
+};
+exports.liquido = (req, res) => {
+  this.ordena(req, res, 'liquido');
 };
 exports.id = (req, res) => {
   this.ordena(req, res, 'id');
