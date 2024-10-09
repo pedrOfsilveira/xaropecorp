@@ -94,11 +94,34 @@ exports.editForm = (req, res) => {
 }; // editForm
 
 exports.update = (req, res) => {
+  let salarioBruto = parseFloat(req.body.salario).toFixed(2);
+  let inss = salarioBruto * 0.11;
+  let irpf;
+
+  if (salarioBruto <= 1903.98) {
+    irpf = 0;
+  }
+  if (salarioBruto > 1903.98 && salarioBruto <= 2826.65) {
+    irpf = salarioBruto * 0.075;
+  }
+  if (salarioBruto > 2826.65 && salarioBruto <= 3751.06) {
+    irpf = salarioBruto * 0.15;
+  }
+  if (salarioBruto > 3751.06 && salarioBruto <= 4664.68) {
+    irpf = salarioBruto * 0.075;
+  }
+  if (salarioBruto > 4664.68) {
+    irpf = salarioBruto * 0.275;
+  }
+
+  let salarioLiquido = (salarioBruto - inss - irpf).toFixed(2);
+
   empregadosModel
     .update(
       {
         nome: req.body.nome,
-        salario: req.body.salario,
+        salario: salarioBruto,
+        liquido: salarioLiquido,
         departamento: req.body.departamento,
       },
       {
