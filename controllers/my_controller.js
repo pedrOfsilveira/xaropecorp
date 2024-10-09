@@ -120,11 +120,15 @@ exports.update = (req, res) => {
 
 exports.pesquisa = (req, res) => {
   let param = req.body.pesquisa;
+  let filtro_dep = req.body.filtro_departamento;
   empregadosModel
     .findAll({
       where: {
         nome: {
           [Op.like]: `%${param}%`,
+        },
+        departamento: {
+          [Op.like]: `%${filtro_dep}%`
         },
       },
     })

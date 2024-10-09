@@ -31,6 +31,7 @@ CREATE TABLE `empregados` (
   `id` int NOT NULL,
   `nome` varchar(155) NOT NULL,
   `salario` double NOT NULL,
+  `liquido` double NOT NULL,
   `departamento` enum('administrativo','designer', 'contabil', 'fabrica') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -38,12 +39,12 @@ CREATE TABLE `empregados` (
 -- Extraindo dados da tabela `empregados`
 --
 
-INSERT INTO `empregados` (`id`, `nome`, `salario`, `departamento`) VALUES
-(1, 'Pedro Silveira', 45000, 'designer'),
-(2, 'Artur Costa', 1500, 'administrativo'),
-(3, 'João Roberto', 3500, 'contabil'),
-(4, 'Eduardo Brião', 300550, 'fabrica'),
-(5, 'Isabella Rosa', 5.30, 'designer');
+INSERT INTO `empregados` (`id`, `nome`, `salario`, `liquido`, `departamento`) VALUES
+(1, 'Pedro Silveira', 45000, 27675, 'designer'),
+(2, 'Artur Costa', 1500, 1335, 'administrativo'),
+(3, 'João Roberto', 3500, 2590, 'contabil'),
+(4, 'Eduardo Brião', 300550, 184838.25, 'fabrica'),
+(5, 'Isabella Rosa', 5.30, 4.71, 'designer');
 
 --
 -- Índices para tabelas despejadas
